@@ -10,3 +10,5 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/sites-available/default
       - ./nginx/index.html:/usr/share/nginx/html/index.html
+  
+      
