@@ -1,14 +1,29 @@
 version: "3.9"
 
+volumes:
+  portainer_data:
+
 services:
   nginx:
     hostname : nginx
     container_name : nginx
     image: nginx:latest
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/sites-available/default
-      - ./nginx/index.html:/usr/share/nginx/html/index.html
-  
-      
+      - ./nginx/index.html:/var/www/html/index.html
+      - ./nginx/core.conf:/etc/nginx/conf.d/core.conf
+      - ./nginx/proxy.conf:/etc/nginx/conf.d/proxy.conf
+      - ./nginx/portainer.conf:/etc/nginx/conf.d/portainer.conf
+    links:
+      - portainer
+
+  portainer:
+    container_name: portainer
+    hostname: portainer
+    image: portainer/portainer-ce
+    ports:
+      - "9000:9000"
+    volumes:
+      - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock      
